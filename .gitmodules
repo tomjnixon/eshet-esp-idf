@@ -1,0 +1,3 @@
+[submodule "eshetcpp"]
+	path = eshetcpp
+	url = git@github.com:tomjnixon/eshetcpp.git
