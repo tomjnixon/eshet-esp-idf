@@ -1,7 +1,7 @@
 idf_component_register(SRCS "src/eshet_esp.cpp" INCLUDE_DIRS "include" REQUIRES
                        esp_common)
 
-LIST(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake") 
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 add_subdirectory(eshetcpp)
 target_link_libraries(${COMPONENT_LIB} PUBLIC eshetcpp)
