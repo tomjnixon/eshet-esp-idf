@@ -1,5 +1,7 @@
-idf_component_register(SRCS "src/eshet_esp.cpp" INCLUDE_DIRS "include" REQUIRES
-                       esp_common)
+idf_component_register(
+  SRCS "src/eshet_esp.cpp"
+  INCLUDE_DIRS "include"
+  REQUIRES esp_common)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
