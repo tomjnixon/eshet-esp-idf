@@ -7,3 +7,6 @@ add_subdirectory(eshetcpp)
 target_link_libraries(${COMPONENT_LIB} PUBLIC eshetcpp)
 target_compile_options(${COMPONENT_LIB} PUBLIC -DACTORPP_RECV_THREAD_SHUTDOWN)
 
+# vrefbuffer.hpp is not necessary, but defines iovec, which conflicts with the
+# esp-idf definition
+target_compile_options(${COMPONENT_LIB} PUBLIC -DMSGPACK_VREFBUFFER_HPP)
