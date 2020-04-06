@@ -1,5 +1,4 @@
 #pragma once
-// #define MSGPACK_VREFBUFFER_HPP
 #include "msgpack.hpp"
 
 namespace eshet {
