@@ -6,6 +6,6 @@ menu "eshet"
 
     config ESHET_PORT
         int "eshet port to connect to"
-        default 11235
+        default 11236
 
 endmenu
