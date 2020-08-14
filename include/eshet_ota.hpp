@@ -47,7 +47,6 @@ public:
         call.reply(Success());
       } break;
       case 2: {
-        vTaskDelay(500 / portTICK_PERIOD_MS);
         auto call = write_chan.read();
         msgpack::type::raw_ref data;
         call.convert(std::tie(data));
