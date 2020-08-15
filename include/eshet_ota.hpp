@@ -1,6 +1,7 @@
 #pragma once
 #include "eshet.hpp"
 #include <esp_ota_ops.h>
+#include <esp_system.h>
 
 namespace eshet {
 using namespace actorpp;
@@ -17,7 +18,7 @@ class OTAHanderActor : public Actor {
 public:
   OTAHanderActor(ESHETClient &client, const std::string &base)
       : begin_chan(*this), write_chan(*this), end_chan(*this),
-        mark_valid_chan(*this), exit_chan(*this) {
+        mark_valid_chan(*this), restart_chan(*this), exit_chan(*this) {
     Channel<Result> result_chan(*this);
 
     client.action_register(base + "/begin", result_chan, begin_chan);
@@ -31,12 +32,15 @@ public:
 
     client.action_register(base + "/mark_valid", result_chan, mark_valid_chan);
     assert(std::holds_alternative<Success>(result_chan.read()));
+
+    client.action_register(base + "/restart", result_chan, restart_chan);
+    assert(std::holds_alternative<Success>(result_chan.read()));
   }
 
   void run() {
     while (true) {
-      switch (
-          wait(exit_chan, begin_chan, write_chan, end_chan, mark_valid_chan)) {
+      switch (wait(exit_chan, begin_chan, write_chan, end_chan, mark_valid_chan,
+                   restart_chan)) {
       case 0: {
         return;
       } break;
@@ -97,6 +101,11 @@ public:
 
         call.reply(Success());
       } break;
+      case 5: {
+        restart_chan.read().reply(Success());
+        vTaskDelay(500 / portTICK_PERIOD_MS);
+        esp_restart();
+      } break;
       }
     }
   }
@@ -108,6 +117,7 @@ private:
   Channel<Call> write_chan;
   Channel<Call> end_chan;
   Channel<Call> mark_valid_chan;
+  Channel<Call> restart_chan;
   Channel<bool> exit_chan;
 
   esp_ota_handle_t update_handle;
