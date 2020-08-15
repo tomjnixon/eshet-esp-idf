@@ -112,7 +112,7 @@ private:
 
   esp_ota_handle_t update_handle;
   const esp_partition_t *update_partition;
-};
+}; // namespace eshet
 
 using OTAHandler = ActorThread<OTAHanderActor>;
 } // namespace eshet
