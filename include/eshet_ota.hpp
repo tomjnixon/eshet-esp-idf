@@ -5,6 +5,14 @@
 namespace eshet {
 using namespace actorpp;
 
+bool handle_error(Call &call, const char *tag, esp_err_t err) {
+  if (err != ESP_OK) {
+    call.reply(Error(oh_with_zone(std::make_tuple(tag, esp_err_to_name(err)))));
+    return true;
+  }
+  return false;
+}
+
 class OTAHanderActor : public Actor {
 public:
   OTAHanderActor(ESHETClient &client, const std::string &base)
@@ -36,11 +44,15 @@ public:
         auto call = begin_chan.read();
 
         update_partition = esp_ota_get_next_update_partition(NULL);
-        assert(update_partition != NULL);
+        if (update_partition == NULL) {
+          call.reply(Error("update_partition is NULL"));
+          break;
+        }
 
         esp_err_t err =
             esp_ota_begin(update_partition, OTA_SIZE_UNKNOWN, &update_handle);
-        assert(err == ESP_OK);
+        if (handle_error(call, "begin", err))
+          break;
 
         // XXX: return write partition so that we can query it to check if it's
         // rebooted into it before saving
@@ -52,17 +64,20 @@ public:
         call.convert(std::tie(data));
 
         esp_err_t err = esp_ota_write(update_handle, data.ptr, data.size);
-        assert(err == ESP_OK);
+        if (handle_error(call, "esp_ota_write", err))
+          break;
         call.reply(Success());
       } break;
       case 3: {
         auto call = end_chan.read();
 
         esp_err_t err = esp_ota_end(update_handle);
-        assert(err == ESP_OK);
+        if (handle_error(call, "esp_ota_end", err))
+          break;
 
         err = esp_ota_set_boot_partition(update_partition);
-        assert(err == ESP_OK);
+        if (handle_error(call, "esp_ota_set_boot_partition", err))
+          break;
 
         call.reply(Success());
         vTaskDelay(500 / portTICK_PERIOD_MS);
