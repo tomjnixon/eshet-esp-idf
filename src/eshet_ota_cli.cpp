@@ -28,9 +28,12 @@ int main(int argc, char **argv) {
     call->add_option("fname", fname)->required();
     call->add_option("-c,--chunksize", chunk_size)->capture_default_str();
     call->callback([&]() {
+      std::ifstream firmware(fname, std::ios::binary);
+      if (!firmware.is_open())
+        throw error_message("could not open " + fname);
+
       ESHETClient client(get_host_port());
 
-      std::ifstream firmware(fname, std::ios::binary);
       std::vector<char> buf(std::istreambuf_iterator<char>(firmware), {});
       std::cout << "size: " << buf.size() << std::endl;
 
