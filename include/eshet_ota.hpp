@@ -16,9 +16,11 @@ bool handle_error(Call &call, const char *tag, esp_err_t err) {
 
 class OTAHanderActor : public Actor {
 public:
-  OTAHanderActor(ESHETClient &client, const std::string &base)
+  OTAHanderActor(ESHETClient &client, const std::string &base,
+                 std::function<void(void)> stop_cb = {})
       : begin_chan(*this), write_chan(*this), end_chan(*this),
-        mark_valid_chan(*this), restart_chan(*this), exit_chan(*this) {
+        mark_valid_chan(*this), restart_chan(*this), exit_chan(*this),
+        stop_cb(std::move(stop_cb)) {
     Channel<Result> result_chan(*this);
 
     client.action_register(base + "/begin", result_chan, begin_chan);
@@ -46,6 +48,9 @@ public:
       } break;
       case 1: {
         auto call = begin_chan.read();
+
+        if (stop_cb)
+          stop_cb();
 
         update_partition = esp_ota_get_next_update_partition(NULL);
         if (update_partition == NULL) {
@@ -119,6 +124,7 @@ private:
   Channel<Call> mark_valid_chan;
   Channel<Call> restart_chan;
   Channel<bool> exit_chan;
+  std::function<void(void)> stop_cb;
 
   esp_ota_handle_t update_handle;
   const esp_partition_t *update_partition;
