@@ -13,6 +13,31 @@ if(IDF_TARGET)
   # vrefbuffer.hpp is not necessary, but defines iovec, which conflicts with the
   # esp-idf definition
   target_compile_options(${COMPONENT_LIB} PUBLIC -DMSGPACK_VREFBUFFER_HPP)
+
+  # add custom commands for ota flashing to the given path. Call this after
+  # project(), like setup_ota(/path/to/ota), and use ESHET_OTA_PATH in the main
+  # component to access the same path.
+  function(setup_ota ota_path)
+    add_custom_target(
+      ota_flash
+      DEPENDS ${PROJECT_BIN}
+      COMMAND eshet_ota flash ${ota_path} ${PROJECT_BIN}
+      USES_TERMINAL)
+
+    add_custom_target(
+      ota_mark_valid
+      COMMAND eshet_ota mark_valid ${ota_path}
+      USES_TERMINAL)
+
+    add_custom_target(
+      ota_mark_invalid
+      COMMAND eshet_ota mark_invalid ${ota_path}
+      USES_TERMINAL)
+
+    get_target_property(main_alias idf::main ALIASED_TARGET)
+    target_compile_definitions(${main_alias}
+                               PUBLIC "ESHET_OTA_PATH=\"${ota_path}\"")
+  endfunction()
 else()
   cmake_minimum_required(VERSION 3.9)
   project(
