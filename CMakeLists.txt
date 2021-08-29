@@ -20,7 +20,7 @@ if(IDF_TARGET)
   function(setup_ota ota_path)
     add_custom_target(
       ota_flash
-      DEPENDS ${PROJECT_BIN}
+      DEPENDS app
       COMMAND eshet_ota flash ${ota_path} ${PROJECT_BIN}
       USES_TERMINAL)
 
