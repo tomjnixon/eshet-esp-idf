@@ -89,7 +89,12 @@ int main(int argc, char **argv) {
       Channel<Result> call_result;
       client.action_call_pack(path + "/mark_valid", call_result,
                               std::make_tuple(false));
-      std::visit([](const auto &r) { check_result(r); }, call_result.read());
+      auto result = call_result.read();
+      if (result == Result(Error("client_exited"))) {
+        std::cerr << "got client_exited error as expected from restart\n";
+        return 0;
+      }
+      std::visit([](const auto &r) { check_result(r); }, result);
       return 0;
     });
   }

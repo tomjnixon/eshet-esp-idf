@@ -98,10 +98,22 @@ public:
         call.convert(std::tie(valid));
 
         if (valid) {
-          esp_ota_mark_app_valid_cancel_rollback();
+          esp_err_t err = esp_ota_mark_app_valid_cancel_rollback();
+          if (handle_error(call, "esp_ota_mark_app_valid_cancel_rollback", err))
+            break;
         } else {
-          esp_ota_mark_app_invalid_rollback_and_reboot();
-          // may never return
+          if (!esp_ota_check_rollback_is_possible()) {
+            call.reply(Error("no rollback possible"));
+            break;
+          }
+
+          // this never returns, but can return an error so we can't reply
+          // first. to get around this, eshet_ota just swallows the
+          // client_exited error from restarting in this case
+          esp_err_t err = esp_ota_mark_app_invalid_rollback_and_reboot();
+          if (handle_error(call, "esp_ota_mark_app_invalid_rollback_and_reboot",
+                           err))
+            break;
         }
 
         call.reply(Success());
