@@ -99,6 +99,21 @@ int main(int argc, char **argv) {
     });
   }
 
+  {
+    CLI::App *call = app.add_subcommand("restart", "restart the device");
+    std::string path;
+    call->add_option("path", path)->required();
+    call->callback([&]() {
+      ESHETClient client(get_host_port());
+
+      Channel<Result> call_result;
+      client.action_call_pack(path + "/restart", call_result,
+                              std::make_tuple());
+      std::visit([](const auto &r) { check_result(r); }, call_result.read());
+      return 0;
+    });
+  }
+
   app.require_subcommand(1);
 
   try {

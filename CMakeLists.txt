@@ -34,6 +34,11 @@ if(IDF_TARGET)
       COMMAND eshet_ota mark_invalid ${ota_path}
       USES_TERMINAL)
 
+    add_custom_target(
+      ota_restart
+      COMMAND eshet_ota restart ${ota_path}
+      USES_TERMINAL)
+
     get_target_property(main_alias idf::main ALIASED_TARGET)
     target_compile_definitions(${main_alias}
                                PUBLIC "ESHET_OTA_PATH=\"${ota_path}\"")
