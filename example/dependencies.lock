@@ -1,0 +1,22 @@
+dependencies:
+  eshet:
+    component_hash: null
+    source:
+      path: /home/tom/dev/eshet/esp32/common/eshet
+      type: local
+    version: '*'
+  esp_simple_wifi:
+    component_hash: 891ff2e72e8a019ccab327796fc27a1e7643ad47439cef0f181f3adc9523579d
+    source:
+      git: https://github.com/tomjnixon/esp_simple_wifi.git
+      path: .
+      type: git
+    version: 69d6d219e88da4c47d24941fea96bac56d4f5fba
+  idf:
+    component_hash: null
+    source:
+      type: idf
+    version: 5.1.2
+manifest_hash: 43a5f906e9cb7c8b895f31b5af8d119fd19c460416352794cbfa97f8d825a7c5
+target: esp32
+version: 1.0.0

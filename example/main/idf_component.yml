@@ -1,0 +1,6 @@
+dependencies:
+  eshet:
+    path: "../../"
+  esp_simple_wifi:
+    git: https://github.com/tomjnixon/esp_simple_wifi.git
+
