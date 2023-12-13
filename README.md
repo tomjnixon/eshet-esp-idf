@@ -1,6 +1,9 @@
-esp-idf component for [eshetcpp](https://github.com/tomjnixon/eshetcpp).
+ESP-IDF component for [eshetcpp](https://github.com/tomjnixon/eshetcpp).
 
-## Using it
+Have a look at [the example](example#readme) to see how this normally all fits
+together.
+
+## Using it in an existing ESP-IDF project
 
 Add this repository as a submodule in `components`:
 
