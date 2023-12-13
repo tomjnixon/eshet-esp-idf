@@ -87,3 +87,19 @@ another valid firmware to roll back to.
 Finally, there's a command to just restart the device:
 
     idf.py ota_restart
+
+## License
+
+```
+Copyright 2023 Thomas Nixon
+
+This program is free software: you can redistribute it and/or modify it under
+the terms of version 3 of the GNU General Public License as published by the
+Free Software Foundation.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+See LICENSE.
+```
