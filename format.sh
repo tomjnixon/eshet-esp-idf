@@ -1,2 +1,2 @@
 #!/bin/bash
-find src/ include/ -name '*.cpp' -or -name '*.hpp' | xargs clang-format -i
+git ls-files -co --exclude-standard | grep '\.[hc]pp$' | xargs clang-format -i
