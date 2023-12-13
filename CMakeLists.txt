@@ -2,7 +2,7 @@ if(IDF_TARGET)
   idf_component_register(
     SRCS "src/eshet_esp.cpp"
     INCLUDE_DIRS "include"
-    REQUIRES esp_common app_update)
+    REQUIRES esp_hw_support app_update)
 
   list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 

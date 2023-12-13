@@ -1,5 +1,5 @@
 #include "eshet_esp.hpp"
-#include "esp_system.h"
+#include "esp_mac.h"
 #include "sdkconfig.h"
 
 namespace eshet {
