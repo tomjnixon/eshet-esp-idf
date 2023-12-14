@@ -64,3 +64,15 @@ new hardware:
     6
     $ eshet call /esp32/sub_one 6
     5
+
+## use with the python examples
+
+The [examples in
+eshet.py](https://github.com/tomjnixon/eshet.py/tree/main/examples) can be used
+to tie these together. For example, to make the LED reflect the input state:
+
+    python examples/bind_state.py /esp32/input_21_state /esp32/led_2
+
+Or to activate the LED on an input event:
+
+    python examples/event_to_state_timer.py /esp32/input_22_event /esp32/led_2
