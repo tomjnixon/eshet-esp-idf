@@ -85,8 +85,6 @@ to mark the current firmware as invalid and reboot to the previous one. This
 should work even if the current firmware has been marked as valid, if there is
 another valid firmware to roll back to.
 
-    idf.py ota_mark_invalid
-
 Finally, there's a command to just restart the device:
 
     idf.py ota_restart
