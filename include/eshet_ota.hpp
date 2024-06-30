@@ -94,7 +94,7 @@ public:
       } break;
       case 4: {
         auto call = mark_valid_chan.read();
-        bool valid;
+        bool valid = false;
         call.convert(std::tie(valid));
 
         if (valid) {
